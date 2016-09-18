@@ -88,9 +88,8 @@ public class ControllerJDBC
   static protected final DateFormatSymbols 
     dateSymbols   = new DateFormatSymbols( Locale.US );
 
-  static protected final SimpleDateFormat
-    SQL_DATE      = new SimpleDateFormat( "'yyyy-MM-dd'"         , dateSymbols ),
-    SQL_TIMESTAMP = new SimpleDateFormat( "'yyyy-MM-dd hh:mm:ss'", dateSymbols );
+  static protected SimpleDateFormat formatDate     ()  { return new SimpleDateFormat( "'yyyy-MM-dd'"         , dateSymbols ); }
+  static protected SimpleDateFormat formatTimestamp()  { return new SimpleDateFormat( "'yyyy-MM-dd hh:mm:ss'", dateSymbols ); }
 
   /** Format value as an equivalent SQL string, returns null if not possible */
   public String format( Object value )
@@ -101,9 +100,9 @@ public class ControllerJDBC
     if ( value instanceof Date )
     {
       if ( Helpers.hasTime( (Date) value ) )
-        return SQL_TIMESTAMP.format( (Date) value );
+        return formatTimestamp().format( (Date) value );
       else
-        return SQL_DATE     .format( (Date) value );
+        return formatDate     ().format( (Date) value );
     }
     else
     if ( value instanceof String )

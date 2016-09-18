@@ -249,7 +249,13 @@ public class StreamlineJDBC implements AutoCloseable
     public void    rollback    ()                      { try { if ( isCommitable() ) jdbc.rollback(); } catch (SQLException e) { throw new CheckedException(e); } }
 
     /** Rollback any open transaction */
-    public void    rollback( Savepoint savepoint )     { if ( savepoint != null )  rollback( savepoint );  else  rollback(); }
+    public void    rollback( Savepoint savepoint )     
+    { 
+      if ( savepoint != null )
+        try { jdbc.rollback( savepoint ); } catch (SQLException e) { throw new CheckedException(e); }
+      else  
+        rollback(); 
+    }
 
     /** Mark a savepoint - this will also turn off auto-commit */ 
     public Savepoint setSavepoint( String name )
